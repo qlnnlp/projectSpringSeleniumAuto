@@ -1,7 +1,7 @@
 package tests.baseTests;
 
 import core.driver.DriverManager;
-import com.example.qa.core.extensions.UiTestExtension;
+import core.extensions.UiTestExtension;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;

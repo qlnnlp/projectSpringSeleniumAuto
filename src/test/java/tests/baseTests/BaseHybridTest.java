@@ -22,7 +22,8 @@ public abstract class BaseHybridTest extends BaseUiTest {
     @Autowired
     protected UserService userService;
 
-    protected final Faker faker = new Faker();
+    @Autowired
+    protected Faker faker;
 
     @Step("Инжектировать Cookie в текущую сессию браузера: {name}")
     protected void injectCookie(String name, String value) {

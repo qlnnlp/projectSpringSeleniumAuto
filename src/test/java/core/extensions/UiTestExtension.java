@@ -1,4 +1,4 @@
-package com.example.qa.core.extensions;
+package core.extensions;
 
 import config.AppProperties;
 import core.driver.DriverFactory;
@@ -27,6 +27,7 @@ public class UiTestExtension implements BeforeEachCallback, AfterEachCallback, T
                 .getBean(AppProperties.class);
 
         WebDriver driver = DriverFactory.createDriver(properties.ui());
+        driver.manage().window().maximize();
         DriverManager.setDriver(driver);
     }
 
