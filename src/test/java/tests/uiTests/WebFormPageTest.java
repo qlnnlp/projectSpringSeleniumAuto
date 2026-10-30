@@ -1,5 +1,6 @@
 package tests.uiTests;
 
+import org.assertj.core.api.SoftAssertions;
 import tests.baseTests.BaseUiTest;
 import ui.pages.MainPage;
 import ui.pages.WebFormPage;
@@ -51,30 +52,42 @@ public class WebFormPageTest extends BaseUiTest {
     void shouldHandleSelectsFilesAndTogglesThenSubmit() {
         WebFormPage page = new WebFormPage().open(appProperties.ui().baseUrl());
 
+        // 1. Выполняем все действия пользователя с формой
         page.selectDropdownByValue("2");
-        assertThat(page.getSelectedDropdownText()).isEqualTo("Two");
-
-        assertThat(page.getDatalistOptions())
-                .containsAll(List.of("San Francisco", "New York", "Seattle", "Los Angeles", "Chicago"));
-
         page.fillDatalist("New York");
-
         page.uploadTempFile("test-report.txt", "Sample automation file content");
-        assertThat(page.getUploadedFileName())
-                .as("Инпут загрузки файла должен содержать имя файла")
-                .contains("test-report.txt");
-
-        assertThat(page.isCheckedCheckboxSelected()).isTrue();
-        assertThat(page.isDefaultCheckboxSelected()).isFalse();
-
         page.toggleDefaultCheckbox();
-        assertThat(page.isDefaultCheckboxSelected()).isTrue();
-
-        assertThat(page.isCheckedRadioSelected()).isTrue();
         page.selectDefaultRadio();
-        assertThat(page.isDefaultRadioSelected()).isTrue();
-        assertThat(page.isCheckedRadioSelected()).isFalse();
 
+        // 2. Мягко валидируем ВСЕ состояния формы в одном блоке
+        SoftAssertions.assertSoftly(softly -> {
+
+            softly.assertThat(page.getSelectedDropdownText())
+                    .as("Выбранное значение в Select")
+                    .isEqualTo("Two");
+
+            softly.assertThat(page.getDatalistOptions())
+                    .as("Доступные опции в Datalist")
+                    .containsAll(List.of("San Francisco", "New York", "Seattle", "Los Angeles", "Chicago"));
+
+            softly.assertThat(page.getUploadedFileName())
+                    .as("Инпут загрузки файла должен содержать имя файла")
+                    .contains("test-report.txt");
+
+            softly.assertThat(page.isDefaultCheckboxSelected())
+                    .as("Чекбокс по умолчанию после клика")
+                    .isTrue();
+
+            softly.assertThat(page.isCheckedRadioSelected())
+                    .as("Изначально выбранная радиокнопка должна сброситься")
+                    .isFalse();
+
+            softly.assertThat(page.isDefaultRadioSelected())
+                    .as("Радиокнопка по умолчанию после клика")
+                    .isTrue();
+        });
+
+        // 3. Отправка формы логически отделена, так как это следующее состояние страницы
         page.submitForm();
         assertThat(page.isFormSubmittedMessageDisplayed())
                 .as("После нажатия Submit должно отображаться подтверждение отправки")
