@@ -1,0 +1,4 @@
+app:
+  api:
+    base-url: "https://reqres.in/api"
+    timeout: 5s

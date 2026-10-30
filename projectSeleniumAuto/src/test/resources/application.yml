@@ -1,0 +1,10 @@
+app:
+  ui:
+    base-url: "https://bonigarcia.dev/selenium-webdriver-java"
+    browser: "CHROME"
+    headless: false
+    wait-timeout: 10s # Spring автоматически спарсит это в Duration
+    remote-url: "" # Оставляем пустым для локального запуска, заполняем для Selenoid
+  api:
+    base-url: "http://localhost:8089/api"
+    timeout: 5s
