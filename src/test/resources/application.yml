@@ -3,8 +3,20 @@ app:
     base-url: "https://bonigarcia.dev/selenium-webdriver-java"
     browser: "CHROME"
     headless: false
-    wait-timeout: 10s # Spring автоматически спарсит это в Duration
-    remote-url: "" # Оставляем пустым для локального запуска, заполняем для Selenoid
+    wait-timeout: 10s
+    remote-url: ""
   api:
     base-url: "http://localhost:8089/api"
     timeout: 5s
+
+spring:
+  datasource:
+    # Запуск в памяти JVM в режиме совместимости с PostgreSQL:
+    url: "jdbc:h2:mem:test_db;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1"
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql

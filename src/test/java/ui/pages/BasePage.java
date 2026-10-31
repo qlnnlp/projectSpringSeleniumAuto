@@ -15,11 +15,19 @@ public abstract class BasePage<T extends BasePage<T>> {
 
     protected final WebDriver driver;
     protected final WebDriverWait wait;
-    protected static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(10);
+
+    // Конфигурируемый таймаут явных ожиданий (дефолт 10s)
+    private static Duration defaultTimeout = Duration.ofSeconds(10);
+
+    public static void setDefaultTimeout(Duration timeout) {
+        if (timeout != null) {
+            defaultTimeout = timeout;
+        }
+    }
 
     protected BasePage() {
         this.driver = DriverManager.getDriver();
-        this.wait = new WebDriverWait(this.driver, DEFAULT_TIMEOUT);
+        this.wait = new WebDriverWait(this.driver, defaultTimeout);
     }
 
     protected abstract String getPagePath();

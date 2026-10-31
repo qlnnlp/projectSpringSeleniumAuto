@@ -14,6 +14,7 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ui.pages.BasePage;
 
 import java.io.ByteArrayInputStream;
 
@@ -25,6 +26,9 @@ public class UiTestExtension implements BeforeEachCallback, AfterEachCallback, T
     public void beforeEach(ExtensionContext context) {
         AppProperties properties = SpringExtension.getApplicationContext(context)
                 .getBean(AppProperties.class);
+
+        // Устанавливаем таймаут явных ожиданий из application.yml
+        BasePage.setDefaultTimeout(properties.ui().waitTimeout());
 
         WebDriver driver = DriverFactory.createDriver(properties.ui());
         driver.manage().window().maximize();

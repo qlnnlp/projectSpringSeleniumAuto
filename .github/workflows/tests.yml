@@ -14,28 +14,30 @@ permissions:
 
 jobs:
   automation-tests:
-    name: Run UI, API & Hybrid Tests
+    name: Run Containerized Test Suite
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17 (Amazon Corretto)
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'corretto'
           java-version: '17'
           cache: 'maven'
 
-      - name: Run Test Suite (Headless Chrome + WireMock)
-        run: mvn clean test -Dapp.ui.headless=true
-        continue-on-error: true
+      - name: Run Tests via Docker Compose
+        run: |
+          docker compose up --build --abort-on-container-exit --exit-code-from test-runner
 
       - name: Generate Allure Report
+        if: always()
         run: mvn allure:report
 
       - name: Upload Allure Results Artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results

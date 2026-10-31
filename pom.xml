@@ -111,6 +111,27 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Spring JDBC + HikariCP -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- PostgreSQL Driver -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- H2 In-Memory Database (для локального запуска без внешнего сервера БД) -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Allure (версии подтягиваются из Allure BOM) -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
