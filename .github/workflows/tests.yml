@@ -28,9 +28,19 @@ jobs:
           java-version: '17'
           cache: 'maven'
 
+      # Предварительно создаем папку с правами пользователя runner
+      - name: Prepare Report Directories
+        run: mkdir -p target/allure-results
+
       - name: Run Tests via Docker Compose
         run: |
           docker compose up --build --abort-on-container-exit --exit-code-from test-runner
+        continue-on-error: true
+
+      # Выравниваем права на созданные контейнером файлы Allure
+      - name: Fix Directory Permissions
+        if: always()
+        run: sudo chown -R $USER:$USER target
 
       - name: Generate Allure Report
         if: always()
