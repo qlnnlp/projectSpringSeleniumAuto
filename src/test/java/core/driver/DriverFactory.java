@@ -11,6 +11,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
@@ -29,7 +30,10 @@ public final class DriverFactory {
 
         if (properties.remoteUrl() != null && !properties.remoteUrl().isBlank()) {
             try {
-                return new RemoteWebDriver(new URL(properties.remoteUrl()), capabilities);
+                RemoteWebDriver remoteDriver = new RemoteWebDriver(new URL(properties.remoteUrl()), capabilities);
+                // Включаем передачу локальных файлов контейнера в удаленный браузер по сети
+                remoteDriver.setFileDetector(new LocalFileDetector());
+                return remoteDriver;
             } catch (MalformedURLException e) {
                 throw new IllegalArgumentException("Некорректный remote-url: " + properties.remoteUrl(), e);
             }

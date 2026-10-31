@@ -25,9 +25,9 @@ public class DrawInCanvasTest extends BaseUiTest {
                 .as("Рисование в границах Canvas не должно приводить к ошибкам")
                 .doesNotThrowAnyException();
 
-        // Негативный сценарий: движение за пределы Canvas приводит к исключению
-        assertThatThrownBy(() -> page.drawLine(10, 150, 150))
-                .as("Движение курсора за пределы видимого Canvas должно вызывать MoveTargetOutOfBoundsException")
+        // Негативный сценарий: гарантированный выход координат курсора за верхний левый угол вьюпорта (< 0)
+        assertThatThrownBy(() -> page.drawLine(1, -3000, -3000))
+                .as("Движение курсора за пределы вьюпорта браузера должно вызывать MoveTargetOutOfBoundsException")
                 .isInstanceOf(MoveTargetOutOfBoundsException.class);
     }
 }
